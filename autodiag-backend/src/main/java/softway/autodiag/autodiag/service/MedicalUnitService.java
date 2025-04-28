@@ -2,22 +2,19 @@ package softway.autodiag.autodiag.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import softway.autodiag.autodiag.Config;
 import softway.autodiag.autodiag.enums.MedicalUnitEnum;
 import softway.autodiag.autodiag.messages.ErrorMessages;
-import softway.autodiag.autodiag.messages.MedicalUnitMessages;
+import softway.autodiag.autodiag.messages.Messages;
 import softway.autodiag.autodiag.model.MedicalUnitInfo;
-import softway.autodiag.autodiag.model.MedicalUnitLabel;
 
 @Service
 public class MedicalUnitService {
-    private final List<MedicalUnitLabel> medicalUnitListMessages = MedicalUnitMessages.MED_UNIT
-            .get(Config.LANGUAGE.getCode());
-    private final List<String> errorsMessages = ErrorMessages.ERRORS.get(Config.LANGUAGE.getCode());
+    private final Messages messages = new Messages(Config.LANGUAGE);
+    private final ErrorMessages errorsMessages = new ErrorMessages(Config.LANGUAGE);
 
     /**
      * Give the medical unit associated to the healthindex
@@ -40,7 +37,7 @@ public class MedicalUnitService {
             return displayMedicalUnit(medicalUnitList);
         } catch (NumberFormatException e) {
             // Invalid format
-            return errorsMessages.get(1);
+            return errorsMessages.getString(1);
         }
     }
 
@@ -56,18 +53,16 @@ public class MedicalUnitService {
      */
     private List<MedicalUnitInfo> getMedicalUnitList(int healthIndex) {
         List<MedicalUnitInfo> medicalUnitList = new ArrayList<>();
-        boolean isMultiple3 = healthIndex % 3 == 0;
-        boolean isMultiple5 = healthIndex % 5 == 0;
 
         // Cardiology
-        if (isMultiple3) {
+        if (healthIndex % 3 == 0) {
             MedicalUnitInfo medicalUnitInfo = new MedicalUnitInfo();
             medicalUnitInfo.setMedicalUnit(MedicalUnitEnum.CARDIO);
             medicalUnitList.add(medicalUnitInfo);
         }
 
         // Trauma
-        if (isMultiple5) {
+        if (healthIndex % 5 == 0) {
             MedicalUnitInfo medicalUnitInfo = new MedicalUnitInfo();
             medicalUnitInfo.setMedicalUnit(MedicalUnitEnum.TRAUMA);
             medicalUnitList.add(medicalUnitInfo);
@@ -85,17 +80,24 @@ public class MedicalUnitService {
      * @return
      */
     private String displayMedicalUnit(List<MedicalUnitInfo> medicalUnitList) {
+        String text = "";
+        int length = medicalUnitList.size();
+
         if (medicalUnitList == null || medicalUnitList.size() == 0) {
-            return errorsMessages.get(0);
+            return errorsMessages.getString(0);
         }
 
-        List<MedicalUnitEnum> medicalUnitType = medicalUnitList.stream().map(MedicalUnitInfo::getMedicalUnit)
-                .collect(Collectors.toList());
-
-        List<String> result = medicalUnitListMessages.stream()
-                .filter(message -> medicalUnitType.contains(message.getMedicalUnit())).map(MedicalUnitLabel::getLabel)
-                .collect(Collectors.toList());
-
-        return String.join(", ", result);
+        for (int i = 0; i < length; i++) {
+            MedicalUnitInfo unit = medicalUnitList.get(i);
+            if (unit.getMedicalUnit() == MedicalUnitEnum.CARDIO) {
+                text += messages.getString(MedicalUnitEnum.CARDIO);
+            } else if (unit.getMedicalUnit() == MedicalUnitEnum.TRAUMA) {
+                text += messages.getString(MedicalUnitEnum.TRAUMA);
+            }
+            if (i < length - 1) {
+                text += ", ";
+            }
+        }
+        return text;
     }
 }
