@@ -1,9 +1,9 @@
-package softway.autodiag.autodiag.messages;
+package softway.autodiag.autodiag.ressources;
 
-import softway.autodiag.autodiag.enums.LanguageEnum;
-import softway.autodiag.autodiag.enums.MedicalUnitEnum;
+import softway.autodiag.autodiag.model.LanguageEnum;
+import softway.autodiag.autodiag.model.MedicalUnitEnum;
 
-public class Messages {
+public class RessourceMessages {
 
         private String[][] messages = {
                         // FR strings
@@ -21,7 +21,7 @@ public class Messages {
 
         private LanguageEnum language;
 
-        public Messages(LanguageEnum language) {
+        public RessourceMessages(LanguageEnum language) {
                 this.language = language;
         }
 

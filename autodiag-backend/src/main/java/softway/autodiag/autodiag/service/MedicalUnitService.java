@@ -6,15 +6,16 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import softway.autodiag.autodiag.Config;
-import softway.autodiag.autodiag.enums.MedicalUnitEnum;
-import softway.autodiag.autodiag.messages.ErrorMessages;
-import softway.autodiag.autodiag.messages.Messages;
-import softway.autodiag.autodiag.model.MedicalUnitInfo;
+import softway.autodiag.autodiag.model.MedicalUnitEnum;
+import softway.autodiag.autodiag.ressources.RessourceErrorMessages;
+import softway.autodiag.autodiag.ressources.RessourceMessages;
+import softway.autodiag.autodiag.model.ErrorEnum;
+import softway.autodiag.autodiag.model.MedicalUnit;
 
 @Service
 public class MedicalUnitService {
-    private final Messages messages = new Messages(Config.LANGUAGE);
-    private final ErrorMessages errorsMessages = new ErrorMessages(Config.LANGUAGE);
+    private final RessourceMessages messages = new RessourceMessages(Config.LANGUAGE);
+    private final RessourceErrorMessages errorsMessages = new RessourceErrorMessages(Config.LANGUAGE);
 
     /**
      * Give the medical unit associated to the healthindex
@@ -31,13 +32,13 @@ public class MedicalUnitService {
             int index = Integer.parseInt(healthIndex);
 
             // Give the service list by a medical unit
-            List<MedicalUnitInfo> medicalUnitList = getMedicalUnitList(index);
+            List<MedicalUnit> medicalUnitList = getMedicalUnitList(index);
 
             // Final string to send
             return displayMedicalUnit(medicalUnitList);
         } catch (NumberFormatException e) {
             // Invalid format
-            return errorsMessages.getString(1);
+            return errorsMessages.getString(ErrorEnum.INVALID_FORMAT);
         }
     }
 
@@ -51,19 +52,19 @@ public class MedicalUnitService {
      * @param healthIndex
      * @return List of medical units
      */
-    private List<MedicalUnitInfo> getMedicalUnitList(int healthIndex) {
-        List<MedicalUnitInfo> medicalUnitList = new ArrayList<>();
+    private List<MedicalUnit> getMedicalUnitList(int healthIndex) {
+        List<MedicalUnit> medicalUnitList = new ArrayList<>();
 
         // Cardiology
         if (healthIndex % 3 == 0) {
-            MedicalUnitInfo medicalUnitInfo = new MedicalUnitInfo();
+            MedicalUnit medicalUnitInfo = new MedicalUnit(null);
             medicalUnitInfo.setMedicalUnit(MedicalUnitEnum.CARDIO);
             medicalUnitList.add(medicalUnitInfo);
         }
 
         // Trauma
         if (healthIndex % 5 == 0) {
-            MedicalUnitInfo medicalUnitInfo = new MedicalUnitInfo();
+            MedicalUnit medicalUnitInfo = new MedicalUnit(null);
             medicalUnitInfo.setMedicalUnit(MedicalUnitEnum.TRAUMA);
             medicalUnitList.add(medicalUnitInfo);
         }
@@ -79,16 +80,16 @@ public class MedicalUnitService {
      * @param medicalUnitList
      * @return
      */
-    private String displayMedicalUnit(List<MedicalUnitInfo> medicalUnitList) {
+    private String displayMedicalUnit(List<MedicalUnit> medicalUnitList) {
         String text = "";
         int length = medicalUnitList.size();
 
         if (medicalUnitList == null || medicalUnitList.size() == 0) {
-            return errorsMessages.getString(0);
+            return errorsMessages.getString(ErrorEnum.NO_MEDICAL_UNIT);
         }
 
         for (int i = 0; i < length; i++) {
-            MedicalUnitInfo unit = medicalUnitList.get(i);
+            MedicalUnit unit = medicalUnitList.get(i);
             if (unit.getMedicalUnit() == MedicalUnitEnum.CARDIO) {
                 text += messages.getString(MedicalUnitEnum.CARDIO);
             } else if (unit.getMedicalUnit() == MedicalUnitEnum.TRAUMA) {

@@ -1,12 +1,7 @@
 package softway.autodiag.autodiag.model;
 
-import softway.autodiag.autodiag.enums.MedicalUnitEnum;
-
-public class MedicalUnitInfo {
+public class MedicalUnit {
     public MedicalUnitEnum medicalUnit;
-
-    public MedicalUnitInfo() {
-    }
 
     public MedicalUnitEnum getMedicalUnit() {
         return this.medicalUnit;
@@ -16,8 +11,7 @@ public class MedicalUnitInfo {
         this.medicalUnit = medicalUnit;
     }
 
-    public MedicalUnitInfo(MedicalUnitEnum medicalUnit) {
+    public MedicalUnit(MedicalUnitEnum medicalUnit) {
         this.medicalUnit = medicalUnit;
     }
-
 }

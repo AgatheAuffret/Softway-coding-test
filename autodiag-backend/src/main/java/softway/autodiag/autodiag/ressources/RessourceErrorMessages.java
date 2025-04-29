@@ -1,8 +1,9 @@
-package softway.autodiag.autodiag.messages;
+package softway.autodiag.autodiag.ressources;
 
-import softway.autodiag.autodiag.enums.LanguageEnum;
+import softway.autodiag.autodiag.model.ErrorEnum;
+import softway.autodiag.autodiag.model.LanguageEnum;
 
-public class ErrorMessages {
+public class RessourceErrorMessages {
         private String[][] messages = {
                         // FR strings
                         {
@@ -18,12 +19,12 @@ public class ErrorMessages {
 
         private LanguageEnum language;
 
-        public ErrorMessages(LanguageEnum language) {
+        public RessourceErrorMessages(LanguageEnum language) {
                 this.language = language;
         }
 
-        public String getString(int id) {
-                return messages[language.ordinal()][id];
+        public String getString(ErrorEnum error) {
+                return messages[language.ordinal()][error.ordinal()];
         }
 
 }

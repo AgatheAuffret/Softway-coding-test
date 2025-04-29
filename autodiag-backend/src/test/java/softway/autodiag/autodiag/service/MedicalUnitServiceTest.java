@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
 import softway.autodiag.autodiag.Config;
-import softway.autodiag.autodiag.enums.LanguageEnum;
+import softway.autodiag.autodiag.model.LanguageEnum;
 
 public class MedicalUnitServiceTest {
     @InjectMocks

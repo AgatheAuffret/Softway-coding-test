@@ -1,4 +1,4 @@
-package softway.autodiag.autodiag.enums;
+package softway.autodiag.autodiag.model;
 
 public enum MedicalUnitEnum {
     CARDIO,
